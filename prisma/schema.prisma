@@ -13,11 +13,14 @@ generator client {
 
 model Dish {
     id          String      @id @default(cuid())
-    name        String      @db.VarChar(255)
-    description String      @db.VarChar(255)
+    name        String
+    url         String
+    authorId    String
+
+    @@index([authorId])
 }
 
 model Ingridient {
     id          String      @id @default(cuid())
-    name        String      @db.VarChar(255)
+    name        String
 }
