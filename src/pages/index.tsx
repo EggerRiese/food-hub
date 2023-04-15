@@ -6,9 +6,9 @@ import Link from "next/link";
 import { api } from "~/utils/api";
 
 const Home: NextPage = () => {
-  const hello = api.example.hello.useQuery({ text: "from tRPC" });
-
   const user = useUser();
+
+  const {data} = api.dish.getAllDishes.useQuery();
 
   return (
     <>
@@ -22,7 +22,14 @@ const Home: NextPage = () => {
           {user.isSignedIn && <SignOutButton/>}
           {!user.isSignedIn && <SignInButton/>}
         </div>
-        <SignIn path="/sign-in" routing="path" signUpUrl="/sign-up" />
+        {/* <SignIn path="/sign-in" routing="path" signUpUrl="/sign-up" /> */}
+
+        <div>
+          {data?.map((dish) => (
+            <div key={dish.id}>{dish.name}</div>
+          ))}
+        </div>
+
       </main>
     </>
   );
