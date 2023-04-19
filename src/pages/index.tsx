@@ -1,4 +1,5 @@
 import { SignIn, SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
+import { create } from "domain";
 import { type NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
@@ -7,9 +8,15 @@ import { api } from "~/utils/api";
 
 const Home: NextPage = () => {
   const [active, setActive] = useState("eat");
+  const [dishName, setDishName] = useState("");
+  const [dishUrl, setDishUrl] = useState("");
   const user = useUser();
 
   const {data} = api.dish.getAllDishes.useQuery();
+
+  const {mutate} = api.dish.create.useMutation();
+
+  if (!user) return null;
 
   return (
     <>
@@ -23,13 +30,36 @@ const Home: NextPage = () => {
         </div>
 
         <div className="flex flex-col flex-initial items-center w-11/12 ml-0 grow">
-          <div className="grid lg:grid-cols-4 sm:grid-cols-3 grid-cols-2 flex-1 gap-4 w-full pt-4 sm:pt-0 pb-4 sm:pb-0">
+          {active === "eat" && 
+            <div className="grid grid-cols-2 flex-1 gap-4 w-full pt-4 pb-4">
               {data?.map((dish) => (
                 <div key={dish.id} className="card group" style={{backgroundImage: 'url('+ dish.url +')'}}>
                   <span className="heading">{dish.name}</span>
                 </div>
               ))}
             </div>
+          }
+          {active === "add" && 
+            <div className="flex flex-col flex-1 justify-end">
+              <div className="input-wrapper">
+                <input id="nameInput" className="peer input" value={dishName} placeholder=" "onChange={(e) => setDishName(e.target.value)}/>
+                <label className="input-label before:content[' '] after:content[' ']">
+                  Gerichtname
+                </label>
+              </div>
+            
+              <div className="input-wrapper">
+                <input id="urlInput" className="peer input" value={dishUrl} placeholder=" " onChange={(e) => setDishUrl(e.target.value)}/>
+                <label className="input-label before:content[' '] after:content[' ']">
+                  Bild URL
+                </label>
+              </div>
+
+              <button className="submit-button mb-6" onClick={() => mutate({name: dishName, url: dishUrl})}>
+                Speichern
+              </button>
+            </div>
+          }
         </div>
 
         <div className="flex flex-row items-center order-last">
