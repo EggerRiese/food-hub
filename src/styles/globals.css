@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-    @apply bg-white text-gray-900;
+    @apply bg-white text-gray-900 overflow-hidden;
 
     overscroll-behavior: none;
 }
@@ -19,6 +19,11 @@ body {
         relative hover:bg-top sm:hover:bg-center sm:hover:-top-2 transition-all ease-in-out duration-300;
     }
 
+    .card-placeholder {
+        @apply sm:h-32 lg:h-40 2xl:h-60 xl:h-48 top-0 min-h-[80px] max-[400px]:min-h-[40px] bg-slate-200
+        rounded-lg flex items-center justify-center shadow-lg cursor-pointer animate-pulse;
+    }
+
     .pill {
         @apply border-2 border-blue-600 rounded-3xl pr-2 pl-2 pt-1 pb-1 text-blue-600 font-bold text-center w-max
                 cursor-pointer select-none hover:bg-blue-600 hover:text-white;
@@ -28,6 +33,11 @@ body {
         @apply group-hover:text-blue-600 sm:font-extrabold sm:text-2xl text-lg font-bold text-white text-center
                 bg-top group-hover:bg-bottom select-none
                 transition-all duration-300 ease-in pr-1 pl-1 ml-4 mr-4;
+    }
+
+    .heading-placeholder {
+        @apply sm:font-extrabold sm:text-2xl text-lg font-bold text-white text-center animate-pulse
+                bg-top select-none pr-1 pl-1 ml-4 mr-4 bg-slate-300 w-3/4 h-6 rounded-md;
     }
 
     .input-wrapper {

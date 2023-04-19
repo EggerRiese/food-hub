@@ -4,28 +4,26 @@ import { z } from "zod";
 import { createTRPCRouter, privateProcedure, publicProcedure } from "~/server/api/trpc";
 
 export const dishRouter = createTRPCRouter({
-  getAllDishes: publicProcedure.query(async ({ ctx }) => {
+  getAllDishes: publicProcedure
+  .query(async ({ ctx }) => {
     const dishes = await ctx.prisma.dish.findMany({
       take: 8,
     })
-    return ctx.prisma.dish.findMany();
+    return dishes;
   }),
 
-  getdishesByUserId: publicProcedure.input(z.object({
-        userId: z.string(),
-      }))
-    .query(({ ctx, input }) =>
+  getDishesByUserId: privateProcedure
+    .query(({ ctx }) =>
       ctx.prisma.dish.findMany({
-          where: {
-            authorId: input.userId,
-          },
-          take: 8,
-        })
-
+        where: {
+          authorId: ctx.userId,
+        },
+        take: 8,
+      })
     ),
 
-    create: privateProcedure.input(
-      z.object({
+  create: privateProcedure
+    .input(z.object({
         name: z.string().min(3),
         url: z.string().url("Only urls are allowed")
       })

@@ -3,6 +3,7 @@ import { create } from "domain";
 import { type NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
+import { LoadingPage } from "~/components/loading";
 
 import { api } from "~/utils/api";
 
@@ -12,9 +13,11 @@ const Home: NextPage = () => {
   const [dishUrl, setDishUrl] = useState("");
   const user = useUser();
 
-  const {data} = api.dish.getAllDishes.useQuery();
-
   const {mutate} = api.dish.create.useMutation();
+  const {data, isLoading} = api.dish.getDishesByUserId.useQuery();
+
+  if (isLoading) return <LoadingPage/>
+
 
   if (!user) return null;
 
@@ -39,6 +42,7 @@ const Home: NextPage = () => {
               ))}
             </div>
           }
+
           {active === "add" && 
             <div className="flex flex-col flex-1 justify-end">
               <div className="input-wrapper">
