@@ -24,8 +24,8 @@ const Home: NextPage = () => {
     }
   );
 
-  const handleFetchNextPage = () => {
-    fetchNextPage();
+  const handleFetchNextPage = async () => {
+    await fetchNextPage();
 
     if (data?.pages[page]?.nextCursor === undefined) {
       setPage((prev) => prev - 1);
