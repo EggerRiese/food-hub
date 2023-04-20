@@ -60,7 +60,7 @@ const Home: NextPage = () => {
                 ))}
               </div>
               <div className="w-fit m-auto hover:rotate-180 active:scale-95 transition-all duration-200">
-                <a className="text-2xl cursor-pointer" onClick={() => handleFetchNextPage()}>🔄</a>
+                <a className="text-2xl cursor-pointer" onClick={() => void handleFetchNextPage()}>🔄</a>
               </div>
             </div>
           }
