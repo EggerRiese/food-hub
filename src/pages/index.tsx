@@ -11,13 +11,31 @@ const Home: NextPage = () => {
   const [active, setActive] = useState("eat");
   const [dishName, setDishName] = useState("");
   const [dishUrl, setDishUrl] = useState("");
+  const [page, setPage] = useState(0);  
   const user = useUser();
 
   const {mutate} = api.dish.create.useMutation();
-  const {data, isLoading} = api.dish.getDishesByUserId.useQuery();
+
+  const {data, fetchNextPage, isLoading} = api.dish.getDishesByUserId.useInfiniteQuery(
+    {
+      limit: 8,
+    },
+    {
+      getNextPageParam: (lastPage) => lastPage.nextCursor,
+    }
+  );
+
+  const handleFetchNextPage = () => {
+    fetchNextPage();
+
+    if (data?.pages[page]?.nextCursor === undefined) {
+      setPage((prev) => prev - 1);
+    } else {
+      setPage((prev) => prev + 1);
+    }
+  };
 
   if (isLoading) return <LoadingPage/>
-
 
   if (!user) return null;
 
@@ -34,12 +52,17 @@ const Home: NextPage = () => {
 
         <div className="flex flex-col flex-initial items-center w-11/12 ml-0 grow">
           {active === "eat" && 
-            <div className="grid grid-cols-2 flex-1 gap-4 w-full pt-4 pb-4">
-              {data?.map((dish) => (
-                <div key={dish.id} className="card group" style={{backgroundImage: 'url('+ dish.url +')'}}>
-                  <span className="heading">{dish.name}</span>
-                </div>
-              ))}
+            <div className="w-full">
+              <div className="grid grid-cols-2 flex-1 gap-4 pt-4 pb-4">
+                {data?.pages[page]?.dishes.map((dish) => (
+                  <div key={dish.id} className="card group" style={{backgroundImage: 'url('+ dish.url +')'}}>
+                    <span className="heading">{dish.name}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="w-fit m-auto hover:rotate-180 active:scale-95 transition-all duration-200">
+                <a className="text-2xl cursor-pointer" onClick={() => handleFetchNextPage()}>🔄</a>
+              </div>
             </div>
           }
 
