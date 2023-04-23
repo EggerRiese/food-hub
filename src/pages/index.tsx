@@ -2,7 +2,7 @@ import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import { type NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
-import { LoadingPage } from "~/components/loading";
+import { LoadingPage, LoadingSpinner } from "~/components/loading";
 
 import { api } from "~/utils/api";
 
@@ -10,10 +10,28 @@ const Home: NextPage = () => {
   const [active, setActive] = useState("eat");
   const [dishName, setDishName] = useState("");
   const [dishUrl, setDishUrl] = useState("");
+  const [posted, setPosted] = useState(false);
+  const [error, setError] = useState(false);
+  const [infoText, setInfoText] = useState("");
   const [page, setPage] = useState(0);  
   const user = useUser();
 
-  const {mutate} = api.dish.create.useMutation();
+  const {mutate, isLoading: isPosting, isError} = api.dish.create.useMutation({
+    onSuccess: () => {
+      setPosted(true);
+      setDishName("");
+      setDishUrl("");
+      setTimeout(() => {
+        setPosted(false);
+      }, 2500);
+    }, onError: (e) => {
+      setError(true);
+
+      setTimeout(() => {
+        setError(false)
+      }, 2500);
+    }
+  });
 
   const {data, fetchNextPage, isLoading} = api.dish.getDishesByUserId.useInfiniteQuery(
     {
@@ -49,7 +67,7 @@ const Home: NextPage = () => {
         <div>
         </div>
 
-        <div className="flex flex-col flex-initial items-center w-11/12 ml-0 grow">
+        <div className="flex flex-col flex-initial items-center w-11/12 h-full ml-0">
           {active === "eat" && 
             <div className="w-full">
               <div className="grid grid-cols-2 flex-1 gap-4 pt-4 pb-4">
@@ -68,22 +86,53 @@ const Home: NextPage = () => {
           {active === "add" && 
             <div className="flex flex-col flex-1 justify-end">
               <div className="input-wrapper">
-                <input id="nameInput" className="peer input" value={dishName} placeholder=" "onChange={(e) => setDishName(e.target.value)}/>
+                <input id="nameInput" 
+                className="peer input" 
+                value={dishName} 
+                placeholder=" " 
+                onChange={(e) => setDishName(e.target.value)}
+                disabled={isPosting}/>
                 <label className="input-label before:content[' '] after:content[' ']">
                   Gerichtname
                 </label>
               </div>
             
               <div className="input-wrapper">
-                <input id="urlInput" className="peer input" value={dishUrl} placeholder=" " onChange={(e) => setDishUrl(e.target.value)}/>
+                <input id="urlInput" 
+                className="peer input" 
+                value={dishUrl} 
+                placeholder=" " 
+                onChange={(e) => setDishUrl(e.target.value)}
+                disabled={isPosting}/>
                 <label className="input-label before:content[' '] after:content[' ']">
                   Bild URL
                 </label>
               </div>
 
-              <button className="submit-button mb-6" onClick={() => mutate({name: dishName, url: dishUrl})}>
-                Speichern
-              </button>
+              {(!isPosting && !posted && !error) && 
+                <button className="submit-button mb-6" 
+                onClick={() => mutate({name: dishName, url: dishUrl})}>
+                  Speichern
+                </button>
+              }
+              {isPosting && 
+                <button className="submit-button py-1 mb-6" 
+                disabled={isPosting}>
+                  {<LoadingSpinner size={28}/>}
+                </button>
+              }
+              {posted && 
+                <button className="submit-button bg-green-600 hover:shadow-green-500/40 shadow-blue-500/20 text-2xl py-1 mb-6" 
+                disabled={isPosting}>
+                  ✅
+                </button>
+              }
+              {error && 
+                <button className="submit-button bg-red-700 hover:shadow-red-600/40 shadow-red-500/20 text-2xl py-1 mb-6" 
+                disabled={isPosting}>
+                  ❌
+                </button>
+              }
             </div>
           }
         </div>
