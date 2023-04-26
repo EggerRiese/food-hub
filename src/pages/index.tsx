@@ -1,7 +1,9 @@
 import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
+import { TRPCClientError } from "@trpc/client";
 import { type NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { LoadingPage, LoadingSpinner } from "~/components/loading";
 
 import { api } from "~/utils/api";
@@ -25,6 +27,14 @@ const Home: NextPage = () => {
       }, 2500);
     }, onError: (e) => {
       setError(true);
+      toast.error("Name des Gerichts zu kurz", {
+        style: {
+          backgroundColor: "#1f2937",
+          color: "white",
+          borderRadius: "8px"
+        }
+      });
+      
 
       setTimeout(() => {
         setError(false)
@@ -63,12 +73,10 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex items-center flex-col h-screen">
-        <div>
-        </div>
 
         <div className="grow overflow-hidden w-11/12">
           {active === "eat" && 
-            <div className="grid grid-cols-2 h-full gap-4 pt-4 pb-4">
+            <div className="grid grid-cols-2 auto-rows-fr h-full gap-4 pt-4 pb-4">
               {data?.pages[page]?.dishes.map((dish) => (
                 <div key={dish.id} className="card group" style={{backgroundImage: 'url('+ dish.url +')'}}>
                   <span className="heading">{dish.name}</span>
@@ -78,7 +86,7 @@ const Home: NextPage = () => {
           }
 
           {active === "add" && 
-            <div className="flex flex-col flex-1 justify-end">
+            <div className="flex flex-col justify-end h-full">
               <div className="input-wrapper">
                 <input id="nameInput" 
                 className="peer input" 
@@ -140,7 +148,7 @@ const Home: NextPage = () => {
         <div className="flex flex-row items-center w-full order-last">
           <div className="m-auto">
             {user.isSignedIn && 
-              <div className="flex flex-initial flex-row gap-6 text-right border-t-4 border-t-primary pt-2">
+              <div className="flex flex-initial flex-row gap-6 text-right border-t-4 border-t-gray-800 pt-2">
                 <div className={active === "eat" ? "menu-entry text-primary" : "menu-entry"}><a onClick={() => setActive("eat")}>Food</a></div>
                 <div className={active === "history" ? "menu-entry text-primary" : "menu-entry"}><a onClick={() => setActive("history")}>Help</a></div>
                 <div className={active === "add" ? "menu-entry text-primary pb-0" : "menu-entry pb-0"}><a onClick={() => setActive("add")}>Add</a></div>

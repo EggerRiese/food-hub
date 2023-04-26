@@ -14,7 +14,7 @@ body {
     }
 
     .card {
-        @apply h-full top-0 
+        @apply h-full top-0 hover:shadow-primary/40
         rounded-lg flex items-center justify-center shadow-lg bg-cover bg-center cursor-pointer
         relative sm:hover:-top-2 transition-all ease-in-out duration-300;
     }
@@ -30,7 +30,7 @@ body {
     }
 
     .heading {
-        @apply group-hover:text-primary sm:font-extrabold sm:text-2xl text-lg font-bold text-white text-center
+        @apply sm:font-extrabold sm:text-2xl text-lg font-bold text-white text-center
                 bg-top group-hover:bg-bottom select-none
                 transition-all duration-300 ease-in pr-1 pl-1 ml-4 mr-4;
     }
@@ -41,7 +41,7 @@ body {
     }
 
     .input-wrapper {
-        @apply relative h-10 w-full min-w-[300px] mb-3;
+        @apply relative h-10 w-full min-w-[200px] mb-3;
     }
 
     .input {

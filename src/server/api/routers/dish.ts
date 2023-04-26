@@ -50,15 +50,12 @@ export const dishRouter = createTRPCRouter({
 
   create: privateProcedure
     .input(z.object({
-        name: z.string().min(3),
+        name: z.string().min(3, "Name to short"),
         url: z.string().url("Only urls are allowed")
       })
     )
     .mutation(async ({ ctx, input }) => {
       const authorId = ctx.userId;
-
-      // const { success } = await ratelimit.limit(authorId);
-      //if (!success) throw new TRPCError({ code: "TOO_MANY_REQUESTS" });
 
       const dish = await ctx.prisma.dish.create({
         data: {
