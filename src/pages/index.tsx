@@ -12,7 +12,6 @@ const Home: NextPage = () => {
   const [dishUrl, setDishUrl] = useState("");
   const [posted, setPosted] = useState(false);
   const [error, setError] = useState(false);
-  const [infoText, setInfoText] = useState("");
   const [page, setPage] = useState(0);  
   const user = useUser();
 
@@ -67,19 +66,14 @@ const Home: NextPage = () => {
         <div>
         </div>
 
-        <div className="flex flex-col flex-initial items-center w-11/12 h-full ml-0">
+        <div className="grow overflow-hidden w-11/12">
           {active === "eat" && 
-            <div className="w-full">
-              <div className="grid grid-cols-2 flex-1 gap-4 pt-4 pb-4">
-                {data?.pages[page]?.dishes.map((dish) => (
-                  <div key={dish.id} className="card group" style={{backgroundImage: 'url('+ dish.url +')'}}>
-                    <span className="heading">{dish.name}</span>
-                  </div>
-                ))}
-              </div>
-              <div className="w-fit m-auto hover:rotate-180 active:scale-95 transition-all duration-200">
-                <a className="text-2xl cursor-pointer" onClick={() => void handleFetchNextPage()}>🔄</a>
-              </div>
+            <div className="grid grid-cols-2 h-full gap-4 pt-4 pb-4">
+              {data?.pages[page]?.dishes.map((dish) => (
+                <div key={dish.id} className="card group" style={{backgroundImage: 'url('+ dish.url +')'}}>
+                  <span className="heading">{dish.name}</span>
+                </div>
+              ))}
             </div>
           }
 
@@ -91,7 +85,7 @@ const Home: NextPage = () => {
                 value={dishName} 
                 placeholder=" " 
                 onChange={(e) => setDishName(e.target.value)}
-                disabled={isPosting}/>
+                readOnly={isPosting}/>
                 <label className="input-label before:content[' '] after:content[' ']">
                   Gerichtname
                 </label>
@@ -103,7 +97,8 @@ const Home: NextPage = () => {
                 value={dishUrl} 
                 placeholder=" " 
                 onChange={(e) => setDishUrl(e.target.value)}
-                disabled={isPosting}/>
+                readOnly={isPosting}
+                />
                 <label className="input-label before:content[' '] after:content[' ']">
                   Bild URL
                 </label>
@@ -137,19 +132,24 @@ const Home: NextPage = () => {
           }
         </div>
 
-        <div className="flex flex-row items-center order-last">
-          <div>
+        {active === "eat" && 
+        <div className="w-fit m-auto p-2 hover:rotate-180 active:scale-95 transition-all duration-200">
+          <a className="text-2xl cursor-pointer" onClick={() => void handleFetchNextPage()}>🔄</a>
+        </div>}
+
+        <div className="flex flex-row items-center w-full order-last">
+          <div className="m-auto">
             {user.isSignedIn && 
-              <div className="flex flex-initial flex-row gap-6 text-right border-t-4 pt-2">
-                <div className={active === "eat" ? "menu-entry text-blue-600" : "menu-entry"}><a onClick={() => setActive("eat")}>Food</a></div>
-                <div className={active === "history" ? "menu-entry text-blue-600" : "menu-entry"}><a onClick={() => setActive("history")}>Help</a></div>
-                <div className={active === "add" ? "menu-entry text-blue-600 pb-0" : "menu-entry pb-0"}><a onClick={() => setActive("add")}>Add</a></div>
+              <div className="flex flex-initial flex-row gap-6 text-right border-t-4 border-t-primary pt-2">
+                <div className={active === "eat" ? "menu-entry text-primary" : "menu-entry"}><a onClick={() => setActive("eat")}>Food</a></div>
+                <div className={active === "history" ? "menu-entry text-primary" : "menu-entry"}><a onClick={() => setActive("history")}>Help</a></div>
+                <div className={active === "add" ? "menu-entry text-primary pb-0" : "menu-entry pb-0"}><a onClick={() => setActive("add")}>Add</a></div>
                 <div className="menu-entry">{<SignOutButton/>}</div>
               </div>
             }
             {!user.isSignedIn && 
               <div className="flex flex-initial flex-row gap-6 text-right border-t-4 pt-2">
-                <div className="menu-entry text-blue-600"><a>Beispiel</a></div>
+                <div className="menu-entry text-primary"><a>Beispiel</a></div>
                 <div className="menu-entry">{<SignInButton/>}</div>
               </div>
             }
