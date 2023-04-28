@@ -2,6 +2,7 @@ import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import { TRPCClientError } from "@trpc/client";
 import { type NextPage } from "next";
 import Head from "next/head";
+import Link from "next/link";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { LoadingPage, LoadingSpinner } from "~/components/loading";
@@ -78,9 +79,11 @@ const Home: NextPage = () => {
           {active === "eat" && 
             <div className="grid grid-cols-2 auto-rows-fr h-full gap-4 pt-4 pb-4">
               {data?.pages[page]?.dishes.map((dish) => (
-                <div key={dish.id} className="card group" style={{backgroundImage: 'url('+ dish.url +')'}}>
-                  <span className="heading">{dish.name}</span>
-                </div>
+                <Link href={`/dish/${dish.name}`}>
+                  <div key={dish.id} className="card group" style={{backgroundImage: 'url('+ dish.url +')'}}>
+                    <span className="heading">{dish.name}</span>
+                  </div>
+                </Link>
               ))}
             </div>
           }
