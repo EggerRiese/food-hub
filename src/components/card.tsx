@@ -1,5 +1,4 @@
-import { RouterOutputs } from "~/utils/api";
-
+import type { RouterOutputs } from "~/utils/api";
 
 type Dish = RouterOutputs["dish"]["getDishById"];
 export const Card = (props: Dish) => {

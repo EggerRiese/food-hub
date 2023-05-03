@@ -1,7 +1,5 @@
 import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
-import { TRPCClientError } from "@trpc/client";
 import { type NextPage } from "next";
-import Head from "next/head";
 import Link from "next/link";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -20,7 +18,7 @@ const Home: NextPage = () => {
   const [page, setPage] = useState(0);  
   const user = useUser();
 
-  const {mutate, isLoading: isPosting, isError} = api.dish.create.useMutation({
+  const {mutate, isLoading: isPosting} = api.dish.create.useMutation({
     onSuccess: () => {
       setPosted(true);
       setDishName("");
@@ -30,14 +28,13 @@ const Home: NextPage = () => {
       }, 2500);
     }, onError: (e) => {
       setError(true);
-      toast.error("Name des Gerichts zu kurz", {
+      toast.error(e.message, {
         style: {
           backgroundColor: "#1f2937",
           color: "white",
           borderRadius: "8px"
         }
       });
-      
 
       setTimeout(() => {
         setError(false)
