@@ -72,7 +72,7 @@ const Home: NextPage = () => {
           {active === "eat" && 
             <div className="grid grid-cols-2 auto-rows-fr h-full gap-4 pt-6 pb-4">
               {data?.pages[page]?.dishes.map((dish) => (
-                <Link href={`/${dish.id}`}>
+                <Link href={`/${dish.id}`} key={dish.id}>
                   <Card {...dish} key={dish.id} />
                 </Link>
               ))}
