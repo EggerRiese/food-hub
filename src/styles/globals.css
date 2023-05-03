@@ -41,7 +41,7 @@ body {
     }
 
     .input-wrapper {
-        @apply relative h-10 w-full min-w-[200px] mb-3;
+        @apply relative h-10 w-full min-w-[200px] max-w-sm mb-3;
     }
 
     .input {
@@ -72,7 +72,7 @@ body {
     }
 
     .submit-button {
-        @apply rounded-lg bg-primary py-3 px-6 font-sans text-xs font-bold w-full
+        @apply rounded-lg bg-primary py-3 px-6 font-sans text-xs font-bold w-full max-w-sm
         uppercase text-white shadow-md shadow-primary/20 transition-all hover:shadow-lg 
         hover:shadow-primary/40 hover:tracking-wider focus:opacity-[0.85] focus:shadow-none 
         active:opacity-[0.85] active:shadow-none active:tracking-tight;

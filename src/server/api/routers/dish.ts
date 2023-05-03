@@ -3,13 +3,15 @@ import { z } from "zod";
 import { createTRPCRouter, privateProcedure, publicProcedure } from "~/server/api/trpc";
 
 export const dishRouter = createTRPCRouter({
-  getAllDishes: publicProcedure
-  .query(async ({ ctx }) => {
-    const dishes = await ctx.prisma.dish.findMany({
-      take: 8,
-    })
-    return dishes;
-  }),
+  getDishById: privateProcedure
+    .input(z.object({id: z.string().cuid()}))
+    .query(async({ctx, input}) => {
+      return await ctx.prisma.dish.findUnique({
+        where: {
+          id: input.id,
+        }
+      })
+    }),
 
   getDishesByUserId: privateProcedure
     .input(z.object({limit: z.number(),cursor: z.string().nullish()}))
