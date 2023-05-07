@@ -1,5 +1,7 @@
 import { GetStaticProps, type NextPage } from "next";
 import Head from "next/head";
+import { PageLayout } from "~/components/layout";
+import { Pill } from "~/components/pill";
 import { generateSSGHelper } from "~/server/helpers/ssgHelpers";
 import { api } from "~/utils/api";
 
@@ -8,7 +10,7 @@ const DishPage: NextPage<{id: string}> = ({id}) => {
   const {data} = api.dish.getDishById.useQuery({
     id: id
   })
-  
+
   console.log(data);
 
   return (
@@ -17,19 +19,27 @@ const DishPage: NextPage<{id: string}> = ({id}) => {
         <title>Food Hub</title>
         <meta name="description" content="Mmmmmh" />
       </Head>
-      <main className="flex items-center flex-col h-screen">
+      <PageLayout>
+        <img src={data?.url} className="w-full h-52 object-cover"/>
+        <div className="text-4xl font-extrabold pt-4">{data?.name}</div>
+        <div className="">Zutaten</div>
 
-        <div>{data?.name}</div>
-
-      </main>
+        <div className="flex flex-row flex-wrap gap-2 justify-center w-3/4 mt-4 mb-4">
+          <Pill name="Paprika"/>
+          <Pill name="Paprika"/>
+          <Pill name="Paprika"/>
+          <Pill name="Paprika"/>
+          <Pill name="Paprika"/>
+          <Pill name="Paprika"/>
+          <Pill name="Paprika"/>
+        </div>
+      </PageLayout>
     </>
   );
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  debugger;
   const ssg = generateSSGHelper();
-  debugger;
 
   const id = context.params?.dish;
 

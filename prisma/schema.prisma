@@ -13,11 +13,16 @@ model Dish {
   name     String
   url      String @db.Text
   authorId String
+  ingridients Ingridient[]
 
   @@index([authorId])
 }
 
 model Ingridient {
   id   String @id @default(cuid())
-  name String
+  dish Dish @relation(fields: [dishId], references: [id])
+  name String 
+  dishId String
+
+  @@index([dishId])
 }
