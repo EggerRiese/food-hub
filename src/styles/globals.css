@@ -3,14 +3,37 @@
 @tailwind utilities;
 
 body {
-    @apply bg-gray-900 text-slate-400 h-screen overflow-hidden;
-
+    @apply bg-gray-900 
+    text-slate-400 
+    h-screen 
+    overflow-hidden;
     overscroll-behavior: none;
 }
 
 @layer components{
     .menu-entry {
-        @apply sm:pb-6 pb-4 sm:font-extrabold sm:text-xl font-bold text-lg cursor-pointer hover:text-primary;
+        @apply relative 
+        p-2
+        m-1
+        w-14
+        sm:font-extrabold 
+        font-bold 
+        text-xss
+        cursor-pointer 
+        hover:text-primary
+        hover:bg-slate-900
+        rounded-lg;
+    }
+
+    .active {
+        @apply text-primary 
+        before:h-[1px] 
+        before:w-10
+        before:absolute
+        before:-top-1
+        before:left-[20%]
+        before:translate-y-[-50%]
+        before:bg-gradient-to-r from-transparent via-primary to-transparent;
     }
 
     .card {
@@ -20,7 +43,7 @@ body {
     }
 
     .card-placeholder {
-        @apply sm:h-32 lg:h-40 2xl:h-60 xl:h-48 top-0 min-h-[80px] max-[400px]:min-h-[40px] bg-slate-200
+        @apply sm:h-32 lg:h-40 2xl:h-60 xl:h-48 top-0 min-h-[80px] max-[400px]:min-h-[40px] bg-slate-700
         rounded-lg flex items-center justify-center shadow-lg cursor-pointer animate-pulse;
     }
 
@@ -37,7 +60,7 @@ body {
 
     .heading-placeholder {
         @apply sm:font-extrabold sm:text-2xl text-lg font-bold text-white text-center animate-pulse
-                bg-top select-none pr-1 pl-1 ml-4 mr-4 bg-slate-300 w-3/4 h-6 rounded-md;
+                bg-top select-none pr-1 pl-1 ml-4 mr-4 bg-slate-600 w-3/4 h-6 rounded-md;
     }
 
     .input-wrapper {

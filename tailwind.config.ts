@@ -4,6 +4,9 @@ export default {
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      fontSize: {
+        "xss": ['8px', '10px'],
+      },
       colors: {
         "primary": "#8b5cf6",
       },

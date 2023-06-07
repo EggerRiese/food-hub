@@ -1,4 +1,6 @@
 import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faShuffle, faUtensils, faQuestion, faPlus, faRightFromBracket, faUser } from "@fortawesome/free-solid-svg-icons";
 import { type NextPage } from "next";
 import Link from "next/link";
 import { useState } from "react";
@@ -6,6 +8,8 @@ import toast from "react-hot-toast";
 import { Card } from "~/components/card";
 import { PageLayout } from "~/components/layout";
 import { LoadingPage, LoadingSpinner } from "~/components/loading";
+import { MenuLayout } from "~/components/menu";
+import { Pill } from "~/components/pill";
 
 import { api } from "~/utils/api";
 
@@ -61,6 +65,8 @@ const Home: NextPage = () => {
     }
   };
 
+  const {data: ingridients} = api.ingridientRouter.getAllIngridients.useQuery();
+
   if (isLoading) return <LoadingPage/>
 
   if (!user) return null;
@@ -70,13 +76,32 @@ const Home: NextPage = () => {
       <PageLayout>
         <div className="grow overflow-hidden w-11/12 max-w-2xl">
           {active === "eat" && 
-            <div className="grid grid-cols-2 auto-rows-fr h-full gap-4 pt-6 pb-4">
+            <div className="grid grid-cols-2 auto-rows-fr h-full gap-4 pt-4">
               {data?.pages[page]?.dishes.map((dish) => (
                 <Link href={`/${dish.id}`} key={dish.id}>
-                  <Card {...dish} key={dish.id} />
+                  <Card ingridients={[]} {...dish} key={dish.id} />
                 </Link>
               ))}
             </div>
+          }
+
+          {active === "help" && 
+            <div className="h-full">
+              <div className="bg-red-200 w-full grid grid-cols-2 auto-rows-fr h-2/5 gap-4 pt-6 pb-4">
+                <Card id={""} name={"test"} url={""} authorId={""} ingridients={[]} />
+                <Card id={""} name={"test"} url={""} authorId={""} ingridients={[]} />
+                <Card id={""} name={"test"} url={""} authorId={""} ingridients={[]} />
+                <Card id={""} name={"test"} url={""} authorId={""} ingridients={[]} />
+              </div>
+              <div className="h-3/5 bg-green-300 flex flex-col-reverse">
+                <div className="flex flex-row flex-wrap-reverse bg-green-200 gap-2 justify-center mt-4 mb-4">
+                  {ingridients?.map((ingridient) => (
+                    <Pill key={ingridient.id} name={ingridient.name}/>
+                  ))}
+                </div>
+              </div>
+            </div>
+            
           }
 
           {active === "add" && 
@@ -135,28 +160,41 @@ const Home: NextPage = () => {
         </div>
 
         {active === "eat" && 
-        <div className="w-fit m-auto p-2 hover:rotate-180 active:scale-95 transition-all duration-200">
-          <a className="text-2xl cursor-pointer" onClick={() => void handleFetchNextPage()}>🔄</a>
+        <div className="w-fit m-auto p-4 hover:text-primary active:scale-95 transition-all duration-200">
+          <a className="text-xl cursor-pointer" onClick={() => void handleFetchNextPage()}>
+            <FontAwesomeIcon icon={faShuffle} />
+          </a>
         </div>}
 
-        <div className="flex flex-row items-center w-full order-last">
-          <div className="m-auto">
-            {user.isSignedIn && 
-              <div className="flex flex-initial flex-row gap-6 text-right border-t-4 border-t-gray-800 pt-2">
-                <div className={active === "eat" ? "menu-entry text-primary" : "menu-entry"}><a onClick={() => setActive("eat")}>Food</a></div>
-                <div className={active === "history" ? "menu-entry text-primary" : "menu-entry"}><a onClick={() => setActive("history")}>Help</a></div>
-                <div className={active === "add" ? "menu-entry text-primary pb-0" : "menu-entry pb-0"}><a onClick={() => setActive("add")}>Add</a></div>
-                <div className="menu-entry">{<SignOutButton/>}</div>
-              </div>
-            }
-            {!user.isSignedIn && 
-              <div className="flex flex-initial flex-row gap-6 text-right border-t-4 pt-2">
-                <div className="menu-entry text-primary"><a>Beispiel</a></div>
-                <div className="menu-entry">{<SignInButton/>}</div>
-              </div>
-            }
-          </div> 
-        </div>
+        {user.isSignedIn && 
+          <MenuLayout>
+            <button className={active === "eat" ? "menu-entry before:content-[''] active" : "menu-entry"} onClick={() => setActive("eat")}>
+              <FontAwesomeIcon icon={faUtensils} className="text-xl"/><br/>Food
+            </button>
+            <button className={active === "help" ? "menu-entry after:content-[''] active" : "menu-entry"} 
+              onClick={() => setActive("help")}>
+                <FontAwesomeIcon icon={faQuestion} className="text-xl"/><br/>Help
+            </button>
+            <button className={active === "add" ? "menu-entry after:content-[''] active" : "menu-entry"} 
+              onClick={() => setActive("add")}>
+                <FontAwesomeIcon icon={faPlus} className="text-xl"/><br/>Add
+            </button>
+            <div className="menu-entry"
+              onClick={() => setActive("")}>
+              <FontAwesomeIcon icon={faRightFromBracket} className="text-xl" /><br/>{<SignOutButton/>}
+            </div>
+          </MenuLayout>
+        }
+        {!user.isSignedIn && 
+          <MenuLayout>
+            <button className="menu-entry after:content-[''] active">
+                <FontAwesomeIcon icon={faUtensils} className="text-xl"/><br/>Example
+            </button>
+            <div className="menu-entry">
+              <FontAwesomeIcon icon={faUser} className="text-xl" /><br/>{<SignInButton/>}
+            </div>
+          </MenuLayout>
+        }
 
       </PageLayout>
     </>

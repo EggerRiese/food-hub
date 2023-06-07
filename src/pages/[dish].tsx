@@ -7,11 +7,10 @@ import { api } from "~/utils/api";
 
 const DishPage: NextPage<{id: string}> = ({id}) => {
 
-  const {data} = api.dish.getDishById.useQuery({
+  const {data, isLoading} = api.dish.getDishById.useQuery({
     id: id
   })
 
-  console.log(data);
 
   return (
     <>
@@ -19,21 +18,34 @@ const DishPage: NextPage<{id: string}> = ({id}) => {
         <title>Food Hub</title>
         <meta name="description" content="Mmmmmh" />
       </Head>
+      {isLoading && 
       <PageLayout>
-        <img src={data?.url} className="w-full h-52 object-cover"/>
-        <div className="text-4xl font-extrabold pt-4">{data?.name}</div>
-        <div className="">Zutaten</div>
-
-        <div className="flex flex-row flex-wrap gap-2 justify-center w-3/4 mt-4 mb-4">
-          <Pill name="Paprika"/>
-          <Pill name="Paprika"/>
-          <Pill name="Paprika"/>
-          <Pill name="Paprika"/>
-          <Pill name="Paprika"/>
-          <Pill name="Paprika"/>
-          <Pill name="Paprika"/>
+        <div className="w-full h-52 card-placeholder rounded-b-none"/>
+        <div className="mt-4 h-10 heading-placeholder"></div>
+        <div className="mt-2 w-24 heading-placeholder"></div>
+        <div className="flex flex-row flex-wrap gap-2 justify-center w-11/12 mt-4 mb-4">
+          <div className="w-24 h-8 pr-0 pl-0 rounded-full heading-placeholder"></div>
+          <div className="w-16 h-8 pr-0 pl-0 rounded-full heading-placeholder"></div>
+          <div className="w-32 h-8 pr-0 pl-0 rounded-full heading-placeholder"></div>
+          <div className="w-40 h-8 pr-0 pl-0 rounded-full heading-placeholder"></div>
+          <div className="w-24 h-8 pr-0 pl-0 rounded-full heading-placeholder"></div>
+          <div className="w-16 h-8 pr-0 pl-0 rounded-full heading-placeholder"></div>
         </div>
       </PageLayout>
+      }
+
+      {!isLoading && 
+      <PageLayout>
+        <img src={data?.url} className="w-full h-52 object-cover rounded-t-lg"/>
+        <div className="text-4xl font-extrabold pt-4">{data?.name}</div>
+        <div className="">Ingridients</div>
+        <div className="flex flex-row flex-wrap gap-2 justify-center w-11/12 mt-4 mb-4">
+          {data?.ingridients.map((ingridient) => (
+            <Pill name={ingridient.name} />
+          ))}
+        </div>
+      </PageLayout>
+      }
     </>
   );
 };

@@ -20,9 +20,6 @@ model Dish {
 
 model Ingridient {
   id   String @id @default(cuid())
-  dish Dish @relation(fields: [dishId], references: [id])
+  dish Dish []
   name String 
-  dishId String
-
-  @@index([dishId])
 }

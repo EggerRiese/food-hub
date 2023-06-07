@@ -9,6 +9,9 @@ export const dishRouter = createTRPCRouter({
       return await ctx.prisma.dish.findUnique({
         where: {
           id: input.id,
+        },
+        include: {
+          ingridients: true,
         }
       })
     }),
