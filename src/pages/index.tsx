@@ -76,7 +76,7 @@ const Home: NextPage = () => {
       <PageLayout>
         <div className="grow overflow-hidden w-11/12 max-w-2xl">
           {active === "eat" && 
-            <div className="grid grid-cols-2 auto-rows-fr h-full gap-4 pt-4">
+            <div className="grid grid-cols-2 auto-rows-fr h-full gap-4 pt-4 pb-2">
               {data?.pages[page]?.dishes.map((dish) => (
                 <Link href={`/${dish.id}`} key={dish.id}>
                   <Card ingridients={[]} {...dish} key={dish.id} />
@@ -87,14 +87,14 @@ const Home: NextPage = () => {
 
           {active === "help" && 
             <div className="h-full">
-              <div className="bg-red-200 w-full grid grid-cols-2 auto-rows-fr h-2/5 gap-4 pt-6 pb-4">
+              <div className="w-full grid grid-cols-2 auto-rows-fr h-2/5 gap-4 pt-6 pb-4">
                 <Card id={""} name={"test"} url={""} authorId={""} ingridients={[]} />
                 <Card id={""} name={"test"} url={""} authorId={""} ingridients={[]} />
                 <Card id={""} name={"test"} url={""} authorId={""} ingridients={[]} />
                 <Card id={""} name={"test"} url={""} authorId={""} ingridients={[]} />
               </div>
-              <div className="h-3/5 bg-green-300 flex flex-col-reverse">
-                <div className="flex flex-row flex-wrap-reverse bg-green-200 gap-2 justify-center mt-4 mb-4">
+              <div className="h-3/5 flex flex-col-reverse">
+                <div className="flex flex-row flex-wrap-reverse gap-2 justify-center mt-4 mb-4">
                   {ingridients?.map((ingridient) => (
                     <Pill key={ingridient.id} name={ingridient.name}/>
                   ))}
@@ -160,7 +160,7 @@ const Home: NextPage = () => {
         </div>
 
         {active === "eat" && 
-        <div className="w-fit m-auto p-4 hover:text-primary active:scale-95 transition-all duration-200">
+        <div className="w-fit m-auto pt-2 pb-4 hover:text-primary active:scale-95 transition-all duration-200">
           <a className="text-xl cursor-pointer" onClick={() => void handleFetchNextPage()}>
             <FontAwesomeIcon icon={faShuffle} />
           </a>

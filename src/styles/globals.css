@@ -45,7 +45,7 @@ body {
         flex 
         items-center 
         justify-center 
-        shadow-lg 
+        shadow-md 
         bg-cover 
         bg-center 
         cursor-pointer
@@ -86,6 +86,7 @@ body {
         text-primary 
         font-bold 
         text-center 
+        text-xs
         w-max
         cursor-pointer 
         select-none 
@@ -123,12 +124,32 @@ body {
     }
 
     .input {
-        @apply h-full w-full rounded-[7px] border border-gray-200 border-t-transparent 
-        bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-gray-700 
-        outline outline-0 transition-all placeholder-shown:border 
-        placeholder-shown:border-gray-200 placeholder-shown:border-t-gray-200 
-        focus:border-2 focus:border-primary focus:border-t-transparent focus:outline-0 
-        disabled:border-0 disabled:bg-gray-50;
+        @apply h-full 
+        w-full 
+        rounded-[7px] 
+        border 
+        border-gray-200 
+        border-t-transparent 
+        bg-transparent 
+        px-3 
+        py-2.5 
+        font-sans 
+        text-sm 
+        font-normal 
+        text-gray-700 
+        outline 
+        outline-0 
+        transition-all 
+        placeholder-shown:border 
+        placeholder-shown:border-gray-200 
+        placeholder-shown:border-t-gray-200 
+        focus:border-2 
+        focus:border-primary 
+        focus:border-t-transparent 
+        focus:outline-0 
+        disabled:border-0 
+        disabled:bg-gray-50
+        caret-primary;
     }
 
     .input-label {
