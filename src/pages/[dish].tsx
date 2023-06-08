@@ -1,5 +1,6 @@
 import { GetStaticProps, type NextPage } from "next";
 import Head from "next/head";
+import Image from 'next/image';
 import { PageLayout } from "~/components/layout";
 import { Pill } from "~/components/pill";
 import { generateSSGHelper } from "~/server/helpers/ssgHelpers";
@@ -36,12 +37,14 @@ const DishPage: NextPage<{id: string}> = ({id}) => {
 
       {!isLoading && 
       <PageLayout>
-        <img src={data?.url} className="w-full h-52 object-cover rounded-t-lg"/>
+        <div className="w-full h-52 relative rounded-t-lg ">
+          <Image src={data?.url ? data.url : "/placeholder_dish.jpg"} fill style={{objectFit: "cover"}} placeholder="blur" blurDataURL={"/lasagna.jpg"} alt={data?.name ? data.name : "placeholder image"}/>
+        </div>
         <div className="text-4xl font-extrabold pt-4">{data?.name}</div>
         <div className="">Ingridients</div>
         <div className="flex flex-row flex-wrap gap-2 justify-center w-11/12 mt-4 mb-4">
           {data?.ingridients.map((ingridient) => (
-            <Pill name={ingridient.name} />
+            <Pill key={ingridient.id} name={ingridient.name} />
           ))}
         </div>
       </PageLayout>

@@ -5,7 +5,7 @@ export default {
   theme: {
     extend: {
       fontSize: {
-        "xss": ['8px', '10px'],
+        "xxs": ['8px', '10px'],
       },
       colors: {
         "primary": "#8b5cf6",

@@ -8,7 +8,7 @@ import { ingridientRouter } from "./routers/ingridient";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-  dish: dishRouter, ingridientRouter,
+  dish: dishRouter, ingridient: ingridientRouter,
 });
 
 // export type definition of API

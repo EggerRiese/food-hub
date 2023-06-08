@@ -65,7 +65,7 @@ const Home: NextPage = () => {
     }
   };
 
-  const {data: ingridients} = api.ingridientRouter.getAllIngridients.useQuery();
+  const {data: ingridients} = api.ingridient.getAllIngridients.useQuery();
 
   if (isLoading) return <LoadingPage/>
 
