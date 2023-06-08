@@ -37,8 +37,8 @@ const DishPage: NextPage<{id: string}> = ({id}) => {
 
       {!isLoading && 
       <PageLayout>
-        <div className="w-full h-52 relative rounded-t-lg ">
-          <Image src={data?.url ? data.url : "/placeholder_dish.jpg"} fill style={{objectFit: "cover"}} placeholder="blur" blurDataURL={"/lasagna.jpg"} alt={data?.name ? data.name : "placeholder image"}/>
+        <div className="w-full h-52 relative rounded-t-lg overflow-hidden">
+          <Image src={data?.url ? data.url : "/placeholder_dish.jpg"} fill sizes="100vw" style={{objectFit: "cover"}} placeholder="blur" blurDataURL={"/lasagna.jpg"} alt={data?.name ? data.name : "placeholder image"}/>
         </div>
         <div className="text-4xl font-extrabold pt-4">{data?.name}</div>
         <div className="">Ingridients</div>

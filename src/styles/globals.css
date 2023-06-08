@@ -21,7 +21,8 @@ body {
         text-xxs
         cursor-pointer 
         hover:text-primary
-        hover:bg-slate-900
+        sm:hover:bg-slate-900
+        active:bg-slate-900
         rounded-lg;
     }
 
@@ -31,7 +32,7 @@ body {
         before:w-10
         before:absolute
         before:-top-1
-        before:left-[20%]
+        before:left-[12%]
         before:translate-y-[-50%]
         before:bg-gradient-to-r from-transparent via-primary to-transparent;
     }

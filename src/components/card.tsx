@@ -11,7 +11,7 @@ export const Card = (props: Dish) => {
     return (
         <div key={props.id} className="card group">
             <span className="heading">{props.name}</span>
-            <Image src={"/lasagna.jpg"} fill style={{objectFit: "cover"}} alt={props.name}/>
+            <Image src={props.url} fill sizes="40vw" style={{objectFit: "cover"}} alt={props.name}/>
         </div>
     );
 };
