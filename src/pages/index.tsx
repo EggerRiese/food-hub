@@ -49,7 +49,8 @@ const Home: NextPage = () => {
       }, 2500);
     }, onError: (e) => {
       setError(true);
-      toast.error(e.message, {
+      // TODO Error msg aufdröseln
+      toast.error("something went wrong 🫤", {
         style: {
           backgroundColor: "#1f2937",
           color: "white",
