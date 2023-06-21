@@ -66,7 +66,7 @@ export const dishRouter = createTRPCRouter({
 
       const { limit, cursor, ingridients } = input;
 
-      let findManyOrCondition = [];
+      const findManyOrCondition = [];
       for (let i = 0; i < ingridients.length; i++) {
         // AND condition between part_num and color_id is implicit
         findManyOrCondition.push({ 

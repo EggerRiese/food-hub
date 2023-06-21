@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShuffle, faUtensils, faQuestion, faPlus, faRightFromBracket, faUser } from "@fortawesome/free-solid-svg-icons";
 import { type NextPage } from "next";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import { Card } from "~/components/card";
 import { PageLayout } from "~/components/layout";
@@ -24,15 +24,15 @@ const Home: NextPage = () => {
   const [ingridientList, setIngridient] = useState<Array<Ingridient>>([]);  
   const user = useUser();
 
-  const handleSelectedIngridients = (ingridient: Ingridient) => {
-    var index = ingridientList.indexOf(ingridient);
+  const handleSelectedIngridients = async (ingridient: Ingridient) => {
+    const index = ingridientList.indexOf(ingridient);
 
     if (index > -1) {
       ingridientList.splice(index, 1);
     } else {
       ingridientList.push(ingridient);
     }
-    refetch();
+    await refetch();
   }
   const {data: suggestedDishes, refetch} = api.dish.getDishesByIngridient.useInfiniteQuery(
     {limit: 4, ingridients: ingridientList},
@@ -110,7 +110,7 @@ const Home: NextPage = () => {
               <div className="h-3/5 flex flex-col-reverse">
                 <div className="flex flex-row flex-wrap-reverse gap-2 justify-center mt-4 mb-4">
                   {ingridients?.map((ingridient) => (
-                    <Pill key={ingridient.id} name={ingridient.name} onClick={() => handleSelectedIngridients(ingridient)}/>
+                    <Pill key={ingridient.id} name={ingridient.name} onClick={() => void handleSelectedIngridients(ingridient)}/>
                   ))}
                 </div>
               </div>
