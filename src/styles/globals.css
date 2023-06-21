@@ -14,7 +14,6 @@ body {
     .menu-entry {
         @apply relative 
         p-2
-        m-1
         w-14
         sm:font-extrabold 
         font-bold 
@@ -31,9 +30,8 @@ body {
         before:h-[1px] 
         before:w-10
         before:absolute
-        before:-top-1
+        before:-top-[1px]
         before:left-[12%]
-        before:translate-y-[-50%]
         before:bg-gradient-to-r from-transparent via-primary to-transparent;
     }
 

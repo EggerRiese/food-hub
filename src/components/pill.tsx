@@ -1,13 +1,14 @@
+import React from "react"
 
+interface Props {
+    onClick: React.MouseEventHandler<HTMLElement>;
+    name: string;
+}
 
-export const Pill = ({name}: {name:string}) => {
-    const select = (event : React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        console.log(event.target);
-    }
-
+export const Pill: React.FC<Props> = ({onClick ,name}: Props) => {
     return (
         <div className="pill group">
-            <span className="text" onClick={select}>{name}</span>
+            <span className="text" onClick={onClick}>{name}</span>
         </div>
-    )
-}
+    );
+};

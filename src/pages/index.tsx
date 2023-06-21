@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShuffle, faUtensils, faQuestion, faPlus, faRightFromBracket, faUser } from "@fortawesome/free-solid-svg-icons";
 import { type NextPage } from "next";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Card } from "~/components/card";
 import { PageLayout } from "~/components/layout";
@@ -12,6 +12,7 @@ import { MenuLayout } from "~/components/menu";
 import { Pill } from "~/components/pill";
 
 import { api } from "~/utils/api";
+import { Ingridient } from "@prisma/client";
 
 const Home: NextPage = () => {
   const [active, setActive] = useState("eat");
@@ -20,7 +21,23 @@ const Home: NextPage = () => {
   const [posted, setPosted] = useState(false);
   const [error, setError] = useState(false);
   const [page, setPage] = useState(0);  
+  const [ingridientList, setIngridient] = useState<Array<Ingridient>>([]);  
   const user = useUser();
+
+  const handleSelectedIngridients = (ingridient: Ingridient) => {
+    var index = ingridientList.indexOf(ingridient);
+
+    if (index > -1) {
+      ingridientList.splice(index, 1);
+    } else {
+      ingridientList.push(ingridient);
+    }
+    refetch();
+  }
+  const {data: suggestedDishes, refetch} = api.dish.getDishesByIngridient.useInfiniteQuery(
+    {limit: 4, ingridients: ingridientList},
+    {getNextPageParam: (lastPage) => lastPage.nextCursor}
+  );
 
   const {mutate, isLoading: isPosting} = api.dish.create.useMutation({
     onSuccess: () => {
@@ -47,12 +64,7 @@ const Home: NextPage = () => {
   });
 
   const {data, fetchNextPage, isLoading} = api.dish.getDishesByUserId.useInfiniteQuery(
-    {
-      limit: 8,
-    },
-    {
-      getNextPageParam: (lastPage) => lastPage.nextCursor,
-    }
+    {limit: 8}, {getNextPageParam: (lastPage) => lastPage.nextCursor}
   );
 
   const handleFetchNextPage = async () => {
@@ -88,15 +100,16 @@ const Home: NextPage = () => {
           {active === "help" && 
             <div className="h-full">
               <div className="w-full grid grid-cols-2 auto-rows-fr h-2/5 gap-4 pt-6 pb-4">
-                <Card id={""} name={"test"} url={""} authorId={""} ingridients={[]} />
-                <Card id={""} name={"test"} url={""} authorId={""} ingridients={[]} />
-                <Card id={""} name={"test"} url={""} authorId={""} ingridients={[]} />
-                <Card id={""} name={"test"} url={""} authorId={""} ingridients={[]} />
+                {suggestedDishes?.pages[0]?.dishes.map((dish) => (
+                  <Link href={`/${dish.id}`} key={dish.id}>
+                    <Card ingridients={[]} {...dish} key={dish.id} />
+                </Link>
+                ))}
               </div>
               <div className="h-3/5 flex flex-col-reverse">
                 <div className="flex flex-row flex-wrap-reverse gap-2 justify-center mt-4 mb-4">
                   {ingridients?.map((ingridient) => (
-                    <Pill key={ingridient.id} name={ingridient.name}/>
+                    <Pill key={ingridient.id} name={ingridient.name} onClick={() => handleSelectedIngridients(ingridient)}/>
                   ))}
                 </div>
               </div>

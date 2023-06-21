@@ -18,6 +18,8 @@ const MyApp: AppType = ({ Component, pageProps }) => {
         <meta name="description" content="🍽️" />
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
         <link rel="icon" href="/favicon.ico" />
+        <link rel="manifest" href="/app.webmanifest"/>
+        <link rel="apple-touch-startup-image" href="ios-startup.png"/> // https://github.com/elegantapp/pwa-asset-generator
       </Head>
       <Toaster position="top-center"/>
       <Component {...pageProps} />

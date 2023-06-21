@@ -1,3 +1,4 @@
+import { Ingridient } from "@prisma/client";
 import { z } from "zod";
 
 import { createTRPCRouter, privateProcedure } from "~/server/api/trpc";
@@ -46,6 +47,69 @@ export const dishRouter = createTRPCRouter({
         const nextItem = dishes.pop();
         nextCursor = nextItem?.id;
       }
+      return {
+        dishes,
+        nextCursor,
+      };
+    },
+  ),
+
+  getDishesByIngridient: privateProcedure
+    .input(z.object({limit: z.number(),
+      cursor: z.string().nullish(), 
+      ingridients: z.object({
+        id: z.string(),
+        name: z.string()
+      }).array()
+      }))
+    .query(async ({ ctx, input }) => {
+
+      const { limit, cursor, ingridients } = input;
+
+      let findManyOrCondition = [];
+      for (let i = 0; i < ingridients.length; i++) {
+        // AND condition between part_num and color_id is implicit
+        findManyOrCondition.push({ 
+            id: ingridients[i]?.id
+        });
+    }
+
+      const dishes = await ctx.prisma.dish.findMany({
+        take: limit + 1,
+        cursor: cursor ? { id: cursor } : undefined,
+        where: {
+          authorId: ctx.userId,
+          ingridients: {
+            some: {
+              OR: findManyOrCondition,
+            }
+          },
+        }
+      });
+
+      if (dishes.length < 4) {
+        const d = await ctx.prisma.dish.findMany({
+          take: 4 - dishes.length, 
+          where: {
+            authorId: ctx.userId,
+            ingridients: {
+              some: {
+                OR: findManyOrCondition,
+              }
+            },
+          }
+        });
+
+        dishes.push(...d);
+      }
+      
+
+      let nextCursor: typeof cursor | undefined = undefined;
+      if (dishes.length > limit) {
+        const nextItem = dishes.pop();
+        nextCursor = nextItem?.id;
+      }
+
       return {
         dishes,
         nextCursor,

@@ -19,36 +19,20 @@ const DishPage: NextPage<{id: string}> = ({id}) => {
         <title>Food Hub</title>
         <meta name="description" content="Mmmmmh" />
       </Head>
-      {isLoading && 
-      <PageLayout>
-        <div className="w-full h-52 card-placeholder rounded-b-none"/>
-        <div className="mt-4 h-10 heading-placeholder"></div>
-        <div className="mt-2 w-24 heading-placeholder"></div>
-        <div className="flex flex-row flex-wrap gap-2 justify-center w-11/12 mt-4 mb-4">
-          <div className="w-24 h-8 pr-0 pl-0 rounded-full heading-placeholder"></div>
-          <div className="w-16 h-8 pr-0 pl-0 rounded-full heading-placeholder"></div>
-          <div className="w-32 h-8 pr-0 pl-0 rounded-full heading-placeholder"></div>
-          <div className="w-40 h-8 pr-0 pl-0 rounded-full heading-placeholder"></div>
-          <div className="w-24 h-8 pr-0 pl-0 rounded-full heading-placeholder"></div>
-          <div className="w-16 h-8 pr-0 pl-0 rounded-full heading-placeholder"></div>
-        </div>
-      </PageLayout>
-      }
-
-      {!isLoading && 
+      
       <PageLayout>
         <div className="w-full h-52 relative rounded-t-lg overflow-hidden">
-          <Image src={data?.url ? data.url : "/placeholder_dish.jpg"} fill sizes="100vw" style={{objectFit: "cover"}} placeholder="blur" blurDataURL={"/lasagna.jpg"} alt={data?.name ? data.name : "placeholder image"}/>
+          <Image src={data?.url ? data.url : "/placeholder_dish.jpg"} fill sizes="100vw" style={{objectFit: "cover"}} placeholder="blur" blurDataURL={"/lasagna.jpeg"} alt={data?.name ? data.name : "placeholder image"}/>
         </div>
         <div className="text-4xl font-extrabold pt-4">{data?.name}</div>
         <div className="">Ingridients</div>
         <div className="flex flex-row flex-wrap gap-2 justify-center w-11/12 mt-4 mb-4">
           {data?.ingridients.map((ingridient) => (
-            <Pill key={ingridient.id} name={ingridient.name} />
+            <Pill key={ingridient.id} name={ingridient.name} onClick={() => alert(ingridient.name)}/>
           ))}
         </div>
       </PageLayout>
-      }
+      
     </>
   );
 };
