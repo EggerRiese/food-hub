@@ -68,11 +68,10 @@ export const dishRouter = createTRPCRouter({
 
       const findManyOrCondition = [];
       for (let i = 0; i < ingridients.length; i++) {
-        // AND condition between part_num and color_id is implicit
         findManyOrCondition.push({ 
             id: ingridients[i]?.id
         });
-    }
+      }
 
       const dishes = await ctx.prisma.dish.findMany({
         take: limit + 1,
@@ -85,24 +84,7 @@ export const dishRouter = createTRPCRouter({
             }
           },
         }
-      });
-
-      if (dishes.length < 4) {
-        const d = await ctx.prisma.dish.findMany({
-          take: 4 - dishes.length, 
-          where: {
-            authorId: ctx.userId,
-            ingridients: {
-              some: {
-                OR: findManyOrCondition,
-              }
-            },
-          }
-        });
-
-        dishes.push(...d);
-      }
-      
+      });  
 
       let nextCursor: typeof cursor | undefined = undefined;
       if (dishes.length > limit) {
