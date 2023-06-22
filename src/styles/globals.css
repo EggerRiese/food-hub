@@ -92,6 +92,11 @@ body {
         hover:text-white;
     }
 
+    .active-pill {
+        @apply bg-primary
+        text-white;
+    }
+
     .heading {
         @apply sm:font-extrabold 
         sm:text-2xl 
